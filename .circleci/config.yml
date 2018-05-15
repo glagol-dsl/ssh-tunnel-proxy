@@ -5,7 +5,7 @@ jobs:
       - image: alpine:3.7
     working_directory: ~/project
     steps:
-      - run: apk add --no-cache curl git tar
+      - run: apk add --no-cache curl git tar gzip
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
