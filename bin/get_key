@@ -15,9 +15,6 @@ $pdo = new PDO("mysql:host={$dbHost};dbname={$dbName}", $dbUser, $dbPassword, [
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
 ]);
 
-$stmt = $pdo->prepare('INSERT INTO log (message) VALUES (?)');
-$stmt->execute([trim($key)]);
-
 $stmt = $pdo->prepare('SELECT `key` FROM public_keys WHERE key_hash = SHA2(?, 512)');
 $stmt->execute([trim($key)]);
 
