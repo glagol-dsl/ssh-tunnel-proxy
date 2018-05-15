@@ -24,6 +24,8 @@ spec:
         ports:
         - containerPort: 22
         env:
+        - name: foo
+          value: "bar"
         - name: GLAGOL_DNS
           value: "glagol-server-svc.default.svc.cluster.local"
         - name: DB_HOST
