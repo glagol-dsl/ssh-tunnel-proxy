@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: ssh-tunnel-proxy-pod
-        image: glagol/ssh-tunnel-proxy:latest
+        image: glagol/ssh-tunnel-proxy:dev-master
         ports:
         - containerPort: 22
         env:
