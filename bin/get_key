@@ -1,0 +1,30 @@
+#!/usr/local/bin/php
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+$key = $argv[1];
+
+$dbHost = getenv('DB_HOST');
+$dbName = getenv('DB_DATABASE');
+$dbUser = getenv('DB_USERNAME');
+$dbPassword = getenv('DB_PASSWORD');
+
+$pdo = new PDO("mysql:host={$dbHost};dbname={$dbName}", $dbUser, $dbPassword, [
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+]);
+
+$stmt = $pdo->prepare('INSERT INTO log (message) VALUES (?)');
+$stmt->execute([trim($key)]);
+
+$stmt = $pdo->prepare('SELECT `key` FROM public_keys WHERE key_hash = SHA2(?, 512)');
+$stmt->execute([trim($key)]);
+
+$keyFound = $stmt->fetch();
+
+if ($keyFound) {
+    echo 'command="echo You are not allowed to access the shell" ', $keyFound['key'], PHP_EOL;
+}
+
+exit(0);

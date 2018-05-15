@@ -1,0 +1,27 @@
+version: '3'
+services:
+  ssh-tunnel:
+    build: .
+    image: docker_ssh
+    links:
+      - database
+      - glagol_server
+    environment:
+      - DB_HOST=database
+      - DB_DATABASE=glagol
+      - DB_USERNAME=root
+      - DB_PASSWORD=123
+      - GLAGOL_DNS=glagol_server
+    ports:
+      - '23:22'
+  glagol_server:
+    image: glagol/server:latest
+  database:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=123
+      - MYSQL_DATABASE=glagol
+    volumes:
+      - ./initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - '3307:3306'

@@ -1,0 +1,48 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: ssh-tunnel-proxy-deploy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ssh-tunnel-proxy
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: ssh-tunnel-proxy
+    spec:
+      containers:
+      - name: ssh-tunnel-proxy-pod
+        image: glagol/ssh-tunnel-proxy:latest
+        ports:
+        - containerPort: 22
+        env:
+        - name: GLAGOL_DNS
+          value: "glagol-server-svc.default.svc.cluster.local"
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: ssh-tunnel
+              key: db_host
+        - name: DB_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: ssh-tunnel
+              key: db_name
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: ssh-tunnel
+              key: db_user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: ssh-tunnel
+              key: db_pass
