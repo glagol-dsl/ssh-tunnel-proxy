@@ -4,6 +4,7 @@ metadata:
   name: ssh-tunnel-proxy-svc
   labels:
     app: ssh-tunnel-proxy
+    revision: ${REVISION}
 spec:
   type: LoadBalancer
   ports:

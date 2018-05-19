@@ -50,10 +50,14 @@ jobs:
       - checkout
       - run:
           name: Create Kubernetes Deployment
-          command: kubectl apply -f deploy.yml --record
+          command: |
+            sed -i "s/\${REVISION}/\"$(git rev-parse HEAD)\"/g" deploy.yml
+            kubectl apply -f deploy.yml --record
       - run:
           name: Create Kubernetes Service
-          command: kubectl apply -f service.yml
+          command: |
+            sed -i "s/\${REVISION}/\"$(git rev-parse HEAD)\"/g" service.yml
+            kubectl apply -f service.yml
 workflows:
   version: 2
   build-and-deploy:
