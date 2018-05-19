@@ -31,10 +31,7 @@ spec:
         - name: GLAGOL_DNS
           value: "glagol-server-svc.default.svc.cluster.local"
         - name: DB_HOST
-          valueFrom:
-            secretKeyRef:
-              name: ssh-tunnel
-              key: db_host
+          value: "127.0.0.1:3306"
         - name: DB_DATABASE
           valueFrom:
             secretKeyRef:
@@ -43,10 +40,23 @@ spec:
         - name: DB_USERNAME
           valueFrom:
             secretKeyRef:
-              name: ssh-tunnel
-              key: db_user
+              name: cloudsql-db-credentials
+              key: username
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: ssh-tunnel
-              key: db_pass
+              name: cloudsql-db-credentials
+              key: password
+      - name: cloudsql-proxy
+        image: gcr.io/cloudsql-docker/gce-proxy:1.11
+        command: ["/cloud_sql_proxy",
+                  "-instances=glagol-cloud-rdb=tcp:3306",
+                  "-credential_file=/secrets/cloudsql/credentials.json"]
+        volumeMounts:
+          - name: cloudsql-instance-credentials
+            mountPath: /secrets/cloudsql
+            readOnly: true
+      volumes:
+        - name: cloudsql-instance-credentials
+          secret:
+            secretName: cloudsql-instance-credentials
