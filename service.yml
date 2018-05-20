@@ -10,6 +10,6 @@ spec:
   loadBalancerIP: 35.204.215.192
   ports:
   - port: 22
-    protocol: tcp
+    protocol: TCP
   selector:
     app: ssh-tunnel-proxy
