@@ -7,8 +7,9 @@ metadata:
     revision: ${REVISION}
 spec:
   type: LoadBalancer
+  loadBalancerIP: 35.204.215.192
   ports:
   - port: 22
-    protocol: TCP
+    protocol: tcp
   selector:
     app: ssh-tunnel-proxy
