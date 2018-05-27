@@ -7,6 +7,8 @@ error_reporting(E_ALL);
 $key = $argv[1];
 $fingerprint = $argv[2];
 
+file_put_contents('/home/glagol-client/args.log', print_r($argv, true));
+
 $dbHost = getenv('DB_HOST');
 $dbName = getenv('DB_DATABASE');
 $dbUser = getenv('DB_USERNAME');
