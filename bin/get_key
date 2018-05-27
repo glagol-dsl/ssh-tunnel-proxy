@@ -8,7 +8,7 @@ $key = $argv[1];
 $fingerprint = $argv[2];
 
 $field = 'fingerprint_old';
-if (preg_match('/^SHA256:(?P<fingerprint>.+?)/', $fingerprint, $matches)) {
+if (preg_match('/^SHA256:(?P<fingerprint>.+?)$/', $fingerprint, $matches)) {
     $field = 'fingerprint';
     $fingerprint = $matches['fingerprint'];
 }
