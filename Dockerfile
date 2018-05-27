@@ -10,7 +10,7 @@ RUN apt-get update \
 
 RUN adduser glagol-client --home /home/glagol-client --disabled-password --shell /bin/false --gecos '' \
     && passwd -u glagol-client \
-    && echo 'AuthorizedKeysCommand /opt/glagol/bin/authorized_keys %k' >> /etc/ssh/sshd_config \
+    && echo 'AuthorizedKeysCommand /opt/glagol/bin/authorized_keys %k %f' >> /etc/ssh/sshd_config \
     && echo 'AuthorizedKeysCommandUser glagol-client' >> /etc/ssh/sshd_config \
     && echo 'PasswordAuthentication no' >> /etc/ssh/sshd_config \
     && echo 'PubkeyAuthentication yes' >> /etc/ssh/sshd_config \
