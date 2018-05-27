@@ -7,7 +7,10 @@ error_reporting(E_ALL);
 $key = $argv[1];
 $fingerprint = $argv[2];
 
-file_put_contents('/home/glagol-client/args.log', print_r($argv, true));
+$field = 'fingerprint_old';
+if (preg_match('/^SHA256/', $fingerprint)) {
+    $field = 'fingerprint';
+}
 
 $dbHost = getenv('DB_HOST');
 $dbName = getenv('DB_DATABASE');
@@ -18,7 +21,7 @@ $pdo = new PDO("mysql:host={$dbHost};dbname={$dbName}", $dbUser, $dbPassword, [
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
 ]);
 
-$stmt = $pdo->prepare('SELECT `key` FROM public_keys WHERE fingerprint = ?');
+$stmt = $pdo->prepare("SELECT `key` FROM public_keys WHERE $field = ?");
 $stmt->execute([trim($fingerprint)]);
 
 $keyFound = $stmt->fetch();
